@@ -1,14 +1,21 @@
 package ar.uba.fi.tdd.rulogic.model;
 
-import java.lang.reflect.Array;
-
 public class Fact extends Element{
 
-    public void Element(String name, Array composition) {
+    String name;
+    String evaluation;
 
+    Fact(String input) {
+        this.name = input.split("\\(")[0];
+        this.evaluation = input.replaceAll("( *\\( *| *\\) *| *, *)", "");
     }
 
     public boolean evaluate(String input) {
-        return false;
+        String inputToEvaluate = input.replaceAll("( *\\( *| *\\) *| *, *)", "");
+        return this.evaluation.equals(inputToEvaluate);
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

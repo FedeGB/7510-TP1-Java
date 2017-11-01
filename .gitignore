@@ -22,6 +22,7 @@
 hs_err_pid*
 
 # Idea structure
-.idea/
+pom.xml
 rulogic.iml
+.idea/
 

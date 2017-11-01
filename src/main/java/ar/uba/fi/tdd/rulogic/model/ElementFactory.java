@@ -5,11 +5,13 @@ import java.util.regex.Pattern;
 public class ElementFactory {
 
     public Element build(String input) {
-        if(isFact(input)) {
-            Fact fact = new Fact();
+        String clean = input.replaceAll("\\s+","");
+        clean = clean.replaceAll("\\.", "");
+        if(isFact(clean)) {
+            Fact fact = new Fact(clean);
             return fact;
-        } else if(isRule(input)) {
-            Rule rule = new Rule();
+        } else if(isRule(clean)) {
+            Rule rule = new Rule(clean);
             return rule;
         }
         return null;
@@ -21,7 +23,7 @@ public class ElementFactory {
     }
 
     private boolean isRule(String input) {
-        boolean b = Pattern.matches("^[^\\(]*\\([^)]*\\) :- ([^\\(]*\\([^)]*\\), *)*([^\\(]*\\([^)]*\\))$", input);
+        boolean b = Pattern.matches("^[^\\(]*\\([^)]*\\):-([^\\(]*\\([^)]*\\), *)*([^\\(]*\\([^)]*\\))$", input);
         return b;
     }
 }
