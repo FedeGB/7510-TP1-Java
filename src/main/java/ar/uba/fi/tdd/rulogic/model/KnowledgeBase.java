@@ -4,12 +4,15 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Dictionary;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class KnowledgeBase {
 
-	Dictionary<String, Element> elements;
+	public Map<String, List<Element> > elements = new HashMap<>();
 
 	public void parseDataBase(String dbFile) throws Exception {
 		ElementFactory factory = new ElementFactory();
@@ -23,7 +26,15 @@ public class KnowledgeBase {
 				if(element == null) {
 					throw new Exception("Line: " + lineCounter + ", contains: " + line);
 				}
-				elements.put(element.getName(), element);
+				if(elements.containsKey(element.getName())) {
+					List<Element> list = elements.get(element.getName());
+					list.add(element);
+					elements.put(element.getName(), list);
+				} else {
+					List<Element> list = new ArrayList<>();
+					list.add(element);
+					elements.put(element.getName(), list);
+				}
 				lineCounter++;
 			}
 		} catch (FileNotFoundException e) {
@@ -33,14 +44,21 @@ public class KnowledgeBase {
 		} catch (Exception e) {
 			throw e;
 		}
+
 	}
 
 	public boolean answer(String query) {
-		query.replaceAll("\\s+","");
-		if(this.isValidQuery(query)) {
-			String name = query.split("\\(")[0];
-			Element element = elements.get(name);
-			return element.evaluate(query);
+		String cleanQuery = query.replaceAll("\\s+","");
+		cleanQuery = cleanQuery.replaceAll("\\.","");
+		if(this.isValidQuery(cleanQuery)) {
+			String name = cleanQuery.split("\\(")[0];
+			List<Element> elementList = elements.get(name);
+			boolean evaluation = false;
+			for(Element element : elementList) {
+				evaluation = evaluation || element.evaluate(cleanQuery);
+				if(evaluation) break;
+			}
+			return evaluation;
 		}
 		return false;
 	}
