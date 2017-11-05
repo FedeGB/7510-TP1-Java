@@ -1,5 +1,8 @@
 package ar.uba.fi.tdd.rulogic.model;
 
+import java.util.List;
+import java.util.Map;
+
 public class Fact extends Element{
 
     String name;
@@ -10,7 +13,7 @@ public class Fact extends Element{
         this.evaluation = input.replaceAll("( *\\( *| *\\) *| *, *)", "");
     }
 
-    public boolean evaluate(String input) {
+    public boolean evaluate(String input, Map<String,List<Element>> knowledge) {
         String inputToEvaluate = input.replaceAll("( *\\( *| *\\) *| *, *)", "");
         return this.evaluation.equals(inputToEvaluate);
     }

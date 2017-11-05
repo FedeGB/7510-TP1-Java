@@ -35,4 +35,10 @@ public class KnowledgeBaseTest {
 		Assert.assertTrue(this.knowledgeBase.answer("padre(hector, maria)."));
 	}
 
+	@Test
+	public void answerRuleTest() {
+		Assert.assertTrue(this.knowledgeBase.answer("tio(nicolas, alejandro, roberto)."));
+		Assert.assertFalse(this.knowledgeBase.answer("tio(jose, alejandro, roberto)."));
+	}
+
 }

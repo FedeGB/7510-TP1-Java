@@ -55,7 +55,7 @@ public class KnowledgeBase {
 			List<Element> elementList = elements.get(name);
 			boolean evaluation = false;
 			for(Element element : elementList) {
-				evaluation = evaluation || element.evaluate(cleanQuery);
+				evaluation = evaluation || element.evaluate(cleanQuery, this.elements);
 				if(evaluation) break;
 			}
 			return evaluation;
